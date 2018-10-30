@@ -6,7 +6,7 @@ contract('SachToken', function(accounts) {
       tokenInstance = instance;
       return tokenInstance.totalSupply();
     }).then(function(totalSupply) {
-      assert.equal(totalSupply.toNumber(), 1000001)
+      assert.equal(totalSupply.toNumber(), 1000000)
     });
 
   });
