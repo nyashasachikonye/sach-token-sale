@@ -10,6 +10,12 @@ contract SachToken {
   //N.B: solidity gives us a free getter function to retun the total supply.
   uint256 public totalSupply;
 
+  event Transfer(
+    address indexed _from,
+    address indexed _to,
+    uint256 _value
+  );
+
   mapping (address => uint256) public balanceOf;
 
   //constructor
@@ -28,6 +34,7 @@ contract SachToken {
     balanceOf[msg.sender] -= _value;
     balanceOf[_to]+= _value;
     //Transfer Event
+    Transfer(msg.sender, _to, _value);
     //Return an Boolean
 
   }
