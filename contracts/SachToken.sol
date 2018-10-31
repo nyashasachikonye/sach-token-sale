@@ -1,6 +1,12 @@
 pragma solidity ^0.4.23;
 
 contract SachToken {
+
+  //add a name
+  string public name = "SachToken";
+  //add a symbol
+  string public symbol = "XCH";
+
   //N.B: solidity gives us a free getter function to retun the total supply.
   uint256 public totalSupply;
 

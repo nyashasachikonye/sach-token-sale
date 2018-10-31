@@ -14,12 +14,24 @@ contract('SachToken', function(accounts) {
     });
     });
 
-    it('allocates the inital supply to the admin account', function(){
-      return SachToken.deployed().then(function(instance) {
-        tokenInstance = instance;
-        return tokenInstance.balanceOf(accounts[0]);
-      }).then(function(adminBalance){
-        assert.equal(adminBalance.toNumber(), 1000000, 'it allocates the initial balance to the admin account');
-      });
-      });
+  it('allocates the inital supply to the admin account', function(){
+    return SachToken.deployed().then(function(instance) {
+      tokenInstance = instance;
+      return tokenInstance.balanceOf(accounts[0]);
+    }).then(function(adminBalance){
+      assert.equal(adminBalance.toNumber(), 1000000, 'it allocates the initial balance to the admin account');
+    });
   });
+
+  it('initializes the contract with the correct values', function(){
+    return SachToken.deployed().then(function(instance) {
+      tokenInstance = instance;
+      return tokenInstance.name();
+    }).then(function(tokenName){
+      assert.equal(tokenName, 'SachToken', 'it initializes the name of the token');
+      return tokenInstance.symbol();
+    }).then(function(tokenSymbol){
+      assert.equal(tokenSymbol, 'XCH', 'it initializes the symbol of the token');
+    });
+  });
+});
