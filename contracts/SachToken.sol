@@ -34,9 +34,9 @@ contract SachToken {
     balanceOf[msg.sender] -= _value;
     balanceOf[_to]+= _value;
     //Transfer Event
-    Transfer(msg.sender, _to, _value);
+    emit Transfer(msg.sender, _to, _value);
     //Return an Boolean
-
+    return true;
   }
 
 }
