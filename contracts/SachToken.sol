@@ -18,4 +18,18 @@ contract SachToken {
     //allocate the inital supply to admin account
     balanceOf[msg.sender] = _initialSupply;
   }
+
+
+  //Transfer
+  function transfer(address _to, uint256 _value) public returns(bool success) {
+    //Exception if account doesnt have enough
+    require(balanceOf[msg.sender] >= _value);
+    //Transfer balance
+    balanceOf[msg.sender] -= _value;
+    balanceOf[_to]+= _value;
+    //Transfer Event
+    //Return an Boolean
+
+  }
+
 }
