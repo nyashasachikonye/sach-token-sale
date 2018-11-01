@@ -61,5 +61,20 @@ contract SachToken {
     return true;
   }
   //transfer from
+  function transferFrom(address _from, address _to, uint256 _value) public returns (bool success) {
+    //require from account has enough tokens
+    require(_value <= balanceOf[_from]);
+    //require the allowance is big enough : cant transfer tokens more than the allowance
+    require(_value <= allowance[_from][msg.sender]);
+    //change the balance
+    balanceOf[_from] -= _value;
+    balanceOf[_to] += _value;
+    //update the allowance
+    allowance[_from][msg.sender] -= _value;
+    //Transfer Event
+    emit Transfer(_from, _to, _value);
+    //return boolean
+    return true;
+  }
 
 }
