@@ -7,6 +7,9 @@ contract SachTokenSale {
   //public instance variables
   SachToken public tokenContract; //? - function that will give the address of the SachToken to be set inside the constructor
   uint256 public tokenPrice;
+  uint256 public tokensSold;
+
+  event Sell(address _buyer, uint256 _amount);
 
   constructor(SachToken _tokenContract, uint256 _tokenPrice) public {
       //assign admin (does things like end sale) to be the person who deployed the contract
@@ -15,6 +18,29 @@ contract SachTokenSale {
       tokenContract = _tokenContract;
       //token price
       tokenPrice = _tokenPrice;
+  }
+
+  //referencing an external library to handle the multiplication (price determination of the tokens)
+  //multipy
+  function multiply(uint x, uint y) internal pure returns (uint z) {
+    require(y == 0 || (z = x * y) / y == x);
+  }
+
+  function buyTokens(uint256 _numberOfTokens) public payable {
+    //msg.value is the amount of wei that the payable fucntion is being called with by msg.sender
+
+    //payable marker indicates that addresses are able to send ETH via a transaction
+    //require they are given the correct number of tokens for the purchased token price
+    require(msg.value == multiply(_numberOfTokens,tokenPrice));
+    //require that there are still enough tokens
+
+    //keep track of number of tokens sold
+    tokensSold += _numberOfTokens;
+
+    //require that transfer is successful (? - emits a )
+
+    //emit a sell event
+    emit Sell(msg.sender, _numberOfTokens);
 
   }
 }
