@@ -21,7 +21,7 @@ contract SachTokenSale {
   }
 
   //referencing an external library to handle the multiplication (price determination of the tokens)
-  //multipy
+  //multipy : function used to perform safe mulitplications
   function multiply(uint x, uint y) internal pure returns (uint z) {
     require(y == 0 || (z = x * y) / y == x);
   }
@@ -32,7 +32,9 @@ contract SachTokenSale {
     //payable marker indicates that addresses are able to send ETH via a transaction
     //require they are given the correct number of tokens for the purchased token price
     require(msg.value == multiply(_numberOfTokens,tokenPrice));
+
     //require that there are still enough tokens
+    require(tokenContract.balanceOf(this) >= _numberOfTokens);
 
     //keep track of number of tokens sold
     tokensSold += _numberOfTokens;

@@ -1,9 +1,13 @@
+var SachToken = artifacts.require("./contracts/SachToken.sol");
 var SachTokenSale = artifacts.require("./contracts/SachTokenSale.sol");
 
 contract('SachTokenSale', function(accounts) {
   var tokenSaleInstance;
+  var tokenInstance;
+  var admin = accounts[0];
   var buyer = accounts[1];
   var tokenPrice = 1e15; // 1 quadrillion wei (0.001 ETH)
+  var tokensAvailable = 0.75e6;
   var numberOfTokens;
 
   //initialisation tests
@@ -23,8 +27,16 @@ contract('SachTokenSale', function(accounts) {
 });
 
 it('facilitates the purchasing of tokens', function() {
-  return SachTokenSale.deployed().then(function(instance) {
+  return SachToken.deployed().then(function(instance) {
+    //grab token instance first (why?)
+    tokenInstance = instance;
+  return SachTokenSale.deployed()
+}).then(function(instance){
+  //grab the token sale instance
     tokenSaleInstance = instance;
+    //provision 75% of the tokens to the token sale
+    return tokenInstance.transfer(tokenSaleInstance.address, tokensAvailable, {from: admin})
+  }).then(function(receipt) {
     numberOfTokens = 10;
     return tokenSaleInstance.buyTokens(numberOfTokens, {from: buyer, value: numberOfTokens*tokenPrice})
   }).then(function(receipt) {
@@ -39,6 +51,9 @@ it('facilitates the purchasing of tokens', function() {
     return tokenSaleInstance.buyTokens(numberOfTokens, {from: buyer, value: 1});
   }).then(assert.fail).catch(function(error){
     assert(error.message.indexOf('revert') >= 0, 'msg.value must equal number of tokens in wei');
+    return tokenSaleInstance.buyTokens(0.8e6, {from: buyer, value: numberOfTokens*tokenPrice});
+  }).then(assert.fail).catch(function(error){
+    assert(error.message.indexOf('revert') >= 0, 'cannot purchase more tokens than available');;
     });
   });
 });
