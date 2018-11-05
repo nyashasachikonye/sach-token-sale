@@ -39,7 +39,8 @@ contract SachTokenSale {
     //keep track of number of tokens sold
     tokensSold += _numberOfTokens;
 
-    //require that transfer is successful (? - emits a )
+    //require that transfer is successful (? - emits a transfer event) // the actual BUY fuctionality
+    require(tokenContract.transfer(msg.sender, _numberOfTokens));
 
     //emit a sell event
     emit Sell(msg.sender, _numberOfTokens);

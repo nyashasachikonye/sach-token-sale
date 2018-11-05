@@ -47,6 +47,12 @@ it('facilitates the purchasing of tokens', function() {
     return tokenSaleInstance.tokensSold();
   }).then(function(amount) {
     assert.equal(amount.toNumber(), numberOfTokens, 'increments the number of tokens sold');
+    return tokenInstance.balanceOf(buyer);
+  }).then(function(balance) {
+    assert.equal(balance.toNumber(), numberOfTokens);
+    return tokenInstance.balanceOf(tokenSaleInstance.address);
+  }).then(function(balance) {
+    assert.equal(balance.toNumber(), (tokensAvailable - numberOfTokens));
     //try to buy tokens different from the ETH value
     return tokenSaleInstance.buyTokens(numberOfTokens, {from: buyer, value: 1});
   }).then(assert.fail).catch(function(error){
