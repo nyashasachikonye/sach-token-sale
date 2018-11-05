@@ -62,4 +62,33 @@ it('facilitates the purchasing of tokens', function() {
     assert(error.message.indexOf('revert') >= 0, 'cannot purchase more tokens than available');;
     });
   });
+
+  it('ends token sale', function() {
+    return SachToken.deployed().then(function(instance) {
+      tokenInstance = instance;
+    return SachTokenSale.deployed()
+  }).then(function(instance){
+      tokenSaleInstance = instance;
+      //try to end sale other than the admin
+      return tokenSaleInstance.endSale({from: buyer}); // this test was supposed to fail and didnt
+    }).then(assert.fail).catch(function(error) {
+      assert(error.message.indexOf('revert' >= 0, 'must be admin to end sale'));
+    //   //try to end the sale using the admin account
+      return tokenSaleInstance.endSale({ from: admin });
+    }).then(function(receipt) {
+    //   return tokenInstance.balanceOf(admin);
+    // }).then(function(balance) {
+    //   assert.equal(balance.toNumber(), 999990, 'returns all unsold SachTokens');
+
+    // check that the state variable has been cleared as a result of the self-destruct method
+
+    // Check that the contract has no balance
+    balance = web3.eth.getBalance(tokenSaleInstance.address)
+    assert.equal(balance.toNumber(), 0);
+  //   
+  //   return tokenSaleInstance.tokenPrice();
+  // }).then(function(price){
+  //   assert.equal(price.toNumber(), 0, 'token price was reset');
+    });
+  });
 });
