@@ -25,8 +25,16 @@ App = {
       App.contracts.SachTokenSale.setProvider(App.web3Provider);
       App.contracts.SachTokenSale.deployed().then(function(sachTokenSale){
         console.log("Sach Token Sale Address:",sachTokenSale.address);
+      });
+  }).done(function(){
+        $.getJSON("SachToken.json", function(sachToken){
+          App.contracts.SachToken = TruffleContract(sachToken);
+          App.contracts.SachToken.setProvider(App.web3Provider);
+          App.contracts.SachToken.deployed().then(function(sachToken){
+            console.log("Sach Token Address:",sachToken.address);
+          });
+        });
       })
-    })
   }
 }
 
