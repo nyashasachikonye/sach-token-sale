@@ -1,6 +1,7 @@
 App = {
   web3Provider : null,
   contracts: {},
+  account: '0x0',
 
   init : function(){
     console.log("app initialized...");
@@ -33,10 +34,20 @@ App = {
           App.contracts.SachToken.deployed().then(function(sachToken){
             console.log("Sach Token Address:",sachToken.address);
           });
+          return App.render();
         });
       })
-  }
-}
+  },
+     render: function(){
+       // load account data
+       web3.eth.getCoinbase(function(err,account){
+         if(err == null){
+           App.account = account;
+           $('#accountAddress').html("Your Account:" + account);
+         }
+       });
+     }
+   }
 
 $(function(){
   $(window).load(function() {
