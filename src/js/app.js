@@ -61,7 +61,7 @@ App = {
            $('#accountAddress').html("Your Account:" + account);
          }
        })
-
+       //load tokensale contract
        App.contracts.SachTokenSale.deployed().then(function(instance){
          tokenSaleInstance = instance;
          return tokenSaleInstance.tokenPrice();
@@ -81,16 +81,40 @@ App = {
         //  $('.tokens-available').html(App.tokensAvailable.toNumber());
 
         var progressPercent = (Math.ceil(App.tokensSold *100 / App.tokensAvailable));
-        console.log(progressPercent,'%');
+        // console.log(progressPercent,'%');
         $('#progress').css('width', progressPercent+'%');
+
+
+        // Load token contract
+        App.contracts.SachToken.deployed().then(function(instance) {
+          SachTokenInstance = instance;
+          return SachTokenInstance.balanceOf(App.account);
+        }).then(function(balance) {
+          $('.xch-balance').html(balance.toNumber());
+        })
+        App.loading = false;
+        loader.hide();
+        content.show();
        });
+     },
 
-
-         App.loading = false;
-         loader.hide();
-         content.show();
-     }
-   }
+    buyTokens: function() {
+    $('#content').hide();
+    $('#loader').show();
+    var numberOfTokens = $('#numberOfTokens').val();
+    App.contracts.SachTokenSale.deployed().then(function(instance) {
+      return instance.buyTokens(numberOfTokens, {
+        from: App.account,
+        value: numberOfTokens * App.tokenPrice,
+        gas: 500000 // Gas limit
+      });
+    }).then(function(result) {
+      console.log("Tokens bought...")
+      $('form').trigger('reset') // reset number of tokens in form
+      // Wait for Sell event
+    });
+  }
+}
 
 $(function(){
   $(window).load(function() {
