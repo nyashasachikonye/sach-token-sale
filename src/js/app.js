@@ -86,8 +86,8 @@ App = {
          $('.token-price').html(web3.fromWei(App.tokenPrice, 'ether').toNumber());
          return tokenSaleInstance.tokensSold();
        }).then(function(tokensSold){
-        //  App.tokensSold = 600000;
          App.tokensSold = tokensSold.toNumber();
+         //  App.tokensSold = 600000;
          $('.tokens-sold').html(App.tokensSold);
         //  $('.tokens-sold').html(App.tokensSold.toNumber());
 
@@ -96,7 +96,7 @@ App = {
         //  $('.tokens-available').html(App.tokensAvailable.toNumber());
 
         var progressPercent = (Math.ceil(App.tokensSold *100 / App.tokensAvailable));
-        // console.log(progressPercent,'%');
+        // console.log("progress percent: ",progressPercent,'%');
         $('#progress').css('width', progressPercent+'%');
 
 
@@ -124,7 +124,7 @@ App = {
         gas: 500000 // Gas limit
       });
     }).then(function(result) {
-      console.log("Tokens bought...")
+      // console.log("Tokens bought...")
       $('form').trigger('reset') // reset number of tokens in form
       // Wait for Sell event
     });
