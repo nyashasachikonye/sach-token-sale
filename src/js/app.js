@@ -38,11 +38,26 @@ App = {
           App.contracts.SachToken.deployed().then(function(sachToken){
             // console.log("Sach Token Address:",sachToken.address);
           });
+          App.listenForEvents();
           return App.render();
         });
       })
   },
-     render: function(){
+
+  listenForEvents: function(){
+    App.contracts.SachTokenSale.deployed().then(function(instance){
+      instance.Sell({}, {
+        fromBlock: 0,
+        toBlock: 'latest',
+      }).watch(function(error, event){
+        console.log("event triggered", event);
+        App.render();
+      })
+    })
+  },
+
+
+     render: function() {
        if(App.loading){
          return;
        }
