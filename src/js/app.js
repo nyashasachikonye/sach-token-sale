@@ -71,8 +71,8 @@ App = {
          $('.token-price').html(web3.fromWei(App.tokenPrice, 'ether').toNumber());
          return tokenSaleInstance.tokensSold();
        }).then(function(tokensSold){
-         App.tokensSold = 600000;
-        //  App.tokensSold = tokensSold;
+        //  App.tokensSold = 600000;
+         App.tokensSold = tokensSold.toNumber();
          $('.tokens-sold').html(App.tokensSold);
         //  $('.tokens-sold').html(App.tokensSold.toNumber());
 

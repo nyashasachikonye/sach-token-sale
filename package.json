@@ -9,7 +9,7 @@
     "scripts" : {
       "dev" : "lite-server"
   },
-  "author": "Gregory",
+  "author": "Kuziwa Sachikonye",
   "license": "ISC",
   "devDependencies": {
     "lite-server": "^2.3.0"

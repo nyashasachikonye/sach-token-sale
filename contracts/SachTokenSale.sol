@@ -11,7 +11,7 @@ contract SachTokenSale {
 
   event Sell(address _buyer, uint256 _amount);
 
-  constructor(SachToken _tokenContract, uint256 _tokenPrice) public {
+  function SachTokenSale(SachToken _tokenContract, uint256 _tokenPrice) public {
       //assign admin (does things like end sale) to be the person who deployed the contract
       admin = msg.sender;
       //token contract
@@ -34,13 +34,13 @@ contract SachTokenSale {
     require(msg.value == multiply(_numberOfTokens,tokenPrice));
 
     //require that there are still enough tokens
-    require(tokenContract.balanceOf(this) >= _numberOfTokens);
+    require(tokenContract.balanceOf(this) >= _numberOfTokens); //ERROR HERE
+
+    //require that transfer is successful (? - emits a transfer event) // the actual BUY fuctionality
+    require(tokenContract.transfer(msg.sender, _numberOfTokens)); // ERROR HERE
 
     //keep track of number of tokens sold
     tokensSold += _numberOfTokens;
-
-    //require that transfer is successful (? - emits a transfer event) // the actual BUY fuctionality
-    require(tokenContract.transfer(msg.sender, _numberOfTokens));
 
     //emit a sell event
     emit Sell(msg.sender, _numberOfTokens);
