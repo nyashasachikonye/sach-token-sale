@@ -51,10 +51,9 @@ contract SachTokenSale {
     //require that only an admin can do this
     require(msg.sender == admin);
     //transfer the remaining tokens in the sale back to the admin
-    /*require(tokenContract.transfer(admin, tokenContract.balanceOf(this)));*/ // this line is causing errors!
-
+    require(tokenContract.transfer(admin, tokenContract.balanceOf(this))); // this line is causing errors!
     //destroy the contract
-    /*selfdestruct(admin);*/ // this wasnt used eventually
+    selfdestruct(admin); // this wasnt used eventually
     /*admin.transfer(address(this).balance);*/
   }
 }

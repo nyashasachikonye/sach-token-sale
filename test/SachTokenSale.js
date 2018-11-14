@@ -76,19 +76,13 @@ it('facilitates the purchasing of tokens', function() {
     //   //try to end the sale using the admin account
       return tokenSaleInstance.endSale({ from: admin });
     }).then(function(receipt) {
-    //   return tokenInstance.balanceOf(admin);
-    // }).then(function(balance) {
-    //   assert.equal(balance.toNumber(), 999990, 'returns all unsold SachTokens');
-
+      return tokenInstance.balanceOf(admin);
+    }).then(function(balance) {
+      assert.equal(balance.toNumber(), 999990, 'returns all unsold SachTokens to admin');
     // check that the state variable has been cleared as a result of the self-destruct method
-
-    // Check that the contract has no balance
-    balance = web3.eth.getBalance(tokenSaleInstance.address)
-    assert.equal(balance.toNumber(), 0);
-  //   
-  //   return tokenSaleInstance.tokenPrice();
+    // return tokenSaleInstance.tokenPrice();
   // }).then(function(price){
-  //   assert.equal(price.toNumber(), 0, 'token price was reset');
+    // assert.equal(price.toNumber(), 0, 'token price was reset');
     });
   });
 });
