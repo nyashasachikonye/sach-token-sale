@@ -2,7 +2,6 @@ var SachToken = artifacts.require("../contracts/SachToken.sol");
 
 contract('SachToken', function(accounts) {
 
-  //initialisation tests
   it('sets the total supply upon deployment', function(){
     return SachToken.deployed().then(function(instance) {
       tokenInstance = instance;
@@ -39,7 +38,6 @@ contract('SachToken', function(accounts) {
   it('transfers token ownership', function(){
     return SachToken.deployed().then(function(instance) {
       tokenInstance = instance;
-      // test 'require' statement by first transferring something larger than the sender's balance
       return tokenInstance.transfer.call(accounts[1],99999999999999999999999);
     }).then(assert.fail).catch(function(error){
       assert(error.message.indexOf('revert') >= 0, 'error message must contain revert');
@@ -87,17 +85,13 @@ it('handles delegated token transfers', function() {
     fromAccount = accounts[2];
     toAccount = accounts[3];
     spendingAcount = accounts[4];
-    //transfer some tokens to fromAccount
     return tokenInstance.transfer(fromAccount, 100, {from: accounts[0]});
   }).then(function(receipt) {
-    //approve spending account to spend 10 token from fromAccount
     return tokenInstance.approve(spendingAcount, 10, {from: fromAccount});
   }).then(function(receipt){
-    // try transferring something larger than the sender's balance
     return tokenInstance.transferFrom(fromAccount, toAccount, 9999, {from: spendingAcount});
   }).then(assert.fail).catch(function(error){
     assert(error.message.indexOf('revert') >= 0, 'cannot transfer value larger than balance');
-    //try transferring something larger thankn the approved amount (20 chosen because it is greater than the approved 10 tokens but less that the 100 tokens that are in the fromAccount's balance)
     return tokenInstance.transferFrom(fromAccount, toAccount, 20, {from: spendingAcount});
   }).then(assert.fail).catch(function(error){
     assert(error.message.indexOf('revert') >= 0, 'cannot transfer value larger than the approved amount');
